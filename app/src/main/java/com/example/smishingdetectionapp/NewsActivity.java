@@ -1,6 +1,5 @@
 package com.example.smishingdetectionapp;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -15,15 +14,15 @@ import android.widget.Toast;
 import android.net.NetworkCapabilities;
 
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.smishingdetectionapp.news.Models.RSSFeedModel;
 import com.example.smishingdetectionapp.news.NewsAdapter;
 import com.example.smishingdetectionapp.news.NewsRequestManager;
 import com.example.smishingdetectionapp.news.OnFetchDataListener;
 import com.example.smishingdetectionapp.news.SelectListener;
+import com.example.smishingdetectionapp.detections.DetectionsActivity;
+import com.example.smishingdetectionapp.news.Models.RSSFeedModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -36,7 +35,7 @@ public class NewsActivity extends SharedActivity implements SelectListener {
     TextView errorMessage;
     Button refreshButton;
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +49,19 @@ public class NewsActivity extends SharedActivity implements SelectListener {
         BottomNavigationView nav = findViewById(R.id.bottom_navigation);
         nav.setSelectedItemId(R.id.nav_news);
         nav.setOnItemSelectedListener(menuItem -> {
-
             int id = menuItem.getItemId();
             if (id == R.id.nav_home) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 overridePendingTransition(0, 0);
                 finish();
                 return true;
+            } else if (id == R.id.nav_detections) {
+                startActivity(new Intent(getApplicationContext(), DetectionsActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
             } else if (id == R.id.nav_news) {
+                nav.setActivated(true);
                 return true;
             } else if (id == R.id.nav_settings) {
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
@@ -157,6 +161,13 @@ public class NewsActivity extends SharedActivity implements SelectListener {
         } else {
             Toast.makeText(this, "No URL available", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        BottomNavigationView nav = findViewById(R.id.bottom_navigation);
+        nav.setSelectedItemId(R.id.nav_home);
+        super.onBackPressed();
     }
 }
 

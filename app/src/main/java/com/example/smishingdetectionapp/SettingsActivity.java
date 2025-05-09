@@ -4,7 +4,6 @@ import android.view.View;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -21,7 +20,7 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import com.example.smishingdetectionapp.chat.ChatAssistantActivity;
-import com.example.smishingdetectionapp.news.NewsAdapter;
+import com.example.smishingdetectionapp.detections.DetectionsActivity;
 import com.example.smishingdetectionapp.ui.account.AccountActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -110,14 +109,17 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         BottomNavigationView nav = findViewById(R.id.bottom_navigation);
-
         nav.setSelectedItemId(R.id.nav_settings);
-
         nav.setOnItemSelectedListener(menuItem -> {
 
             int id = menuItem.getItemId();
             if (id == R.id.nav_home) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.nav_detections) {
+                startActivity(new Intent(getApplicationContext(), DetectionsActivity.class));
                 overridePendingTransition(0, 0);
                 finish();
                 return true;
@@ -127,6 +129,7 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
                 return true;
             } else if (id == R.id.nav_settings) {
+                nav.setActivated(true);
                 return true;
             }
             return false;
@@ -136,19 +139,15 @@ public class SettingsActivity extends AppCompatActivity {
         accountBtn.setOnClickListener(v -> triggerBiometricAuthenticationWithTimeout());
 
         //Filtering button to switch to Smishing rules page
-        ImageView filteringBtn = findViewById(R.id.imageView7);
-        if (filteringBtn != null) {
-            filteringBtn.setOnClickListener(v -> {
-                startActivity(new Intent(this, SmishingRulesActivity.class));
-                finish();
-            });
-        }
+        Button filteringBtn = findViewById(R.id.filteringBtn);
+        filteringBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, SmishingRulesActivity.class));
+        });
 
         // Report button to switch to reporting page
         Button reportBtn = findViewById(R.id.reportBtn);
         reportBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, ReportingActivity.class));
-            finish();
         });
         //Notification button to switch to notification page
 
@@ -156,7 +155,6 @@ public class SettingsActivity extends AppCompatActivity {
         Button helpBtn = findViewById(R.id.helpBtn);
         helpBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, HelpActivity.class));
-            finish();
         });
 
         // About Me button to switch to AboutMeActivity
@@ -184,14 +182,12 @@ public class SettingsActivity extends AppCompatActivity {
         Button feedbackBtn = findViewById(R.id.feedbackBtn);
         feedbackBtn.setOnClickListener(v -> {
             startActivity(new Intent(this, FeedbackActivity.class));
-            finish();
         });
 
-        //Community Button to switch to Community page
-        Button communityBtn = findViewById(R.id.communityBtn);
-        communityBtn.setOnClickListener(v -> {
-            startActivity(new Intent(this, CommunityHomeActivity.class));
-            finish();
+        //Forum Button to switch to Forum page
+        Button forumBtn = findViewById(R.id.forumBtn);
+        forumBtn.setOnClickListener(v -> {
+            startActivity(new Intent(this, ForumActivity.class));
         });
     }
     // Trigger biometric authentication with timeout
@@ -275,6 +271,14 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, NotificationActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        BottomNavigationView nav = findViewById(R.id.bottom_navigation);
+        nav.setSelectedItemId(R.id.nav_home);
+        super.onBackPressed();
+    }
+
     private void applyBoldToAllSwitches(View root) {
         if (!(root instanceof ViewGroup)) return;
 

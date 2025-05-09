@@ -7,11 +7,21 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.Toast;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import com.example.smishingdetectionapp.detections.DatabaseAccess;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -23,11 +33,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.example.smishingdetectionapp.detections.DatabaseAccess;
 import com.example.smishingdetectionapp.detections.YourReportsActivity;
-
-
 public class ReportingActivity extends SharedActivity {
 
 
